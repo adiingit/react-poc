@@ -87,7 +87,7 @@ gulp.task('html', function() {
     production=$.util.env.prod;
     return gulp.src('app/*.html')
         .pipe($.useref())
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest(production?'dist':'tmp'))
         .pipe($.size());
 });
 
@@ -185,7 +185,7 @@ gulp.task('bundle', ['styles', 'buildScripts','moveLibraries', 'bower'], functio
         .pipe(gulp.dest('tmp'));
 });
 
-gulp.task('buildBundle', ['styles', 'scripts', 'moveLibraries', 'bower'], function() {
+gulp.task('buildBundle', ['styles', 'scripts', 'bower'], function() {
     production=$.util.env.prod;
     return gulp.src('./app/*.html')
         .pipe($.useref.assets())
@@ -203,7 +203,7 @@ gulp.task('build', ['html', 'buildBundle', 'images', 'fonts', 'extras'], functio
 });
 
 // Watch production
-gulp.task('watch', ['html', 'fonts','eslint', 'build'], function() {
+gulp.task('watch', ['html', 'fonts','eslint', 'bundle'], function() {
     production=$.util.env.prod;
     
     browserSync({
@@ -222,7 +222,7 @@ gulp.task('watch', ['html', 'fonts','eslint', 'build'], function() {
     // Watch .html files
     gulp.watch('app/*.html', ['html']);
 
-    gulp.watch(['app/styles/**/*.scss', 'app/styles/**/*.css'], ['styles', 'scripts', reload]);
+    gulp.watch(['app/styles/**/*.scss', 'app/styles/**/*.css'], ['styles', production?'scripts':'buildScripts', reload]);
 
     
 
