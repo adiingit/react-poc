@@ -20,7 +20,7 @@ var source = require('vinyl-source-stream'),
 
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
-var production = false;
+var production = $.util.env.prod;
 
 // Clean
 gulp.task('clean', function(cb) {
@@ -176,7 +176,7 @@ gulp.task('buildScripts', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['styles', 'buildScripts','moveLibraries', 'bower'], function() {
+gulp.task('bundle', ['styles', 'buildScripts'], function() {
     production=$.util.env.prod;
     return gulp.src('./app/*.html')
         .pipe($.useref.assets())
@@ -185,7 +185,7 @@ gulp.task('bundle', ['styles', 'buildScripts','moveLibraries', 'bower'], functio
         .pipe(gulp.dest('tmp'));
 });
 
-gulp.task('buildBundle', ['styles', 'scripts', 'bower'], function() {
+gulp.task('buildBundle', ['styles', 'scripts'], function() {
     production=$.util.env.prod;
     return gulp.src('./app/*.html')
         .pipe($.useref.assets())
@@ -195,7 +195,7 @@ gulp.task('buildBundle', ['styles', 'scripts', 'bower'], function() {
 });
 
 // Build
-gulp.task('build', ['html', 'buildBundle', 'images', 'fonts', 'extras'], function() {
+gulp.task('build', ['clean','html', 'buildBundle', 'images', 'fonts', 'extras'], function() {
     gulp.src('dist/scripts/app.js')
         .pipe($.uglify())
         .pipe($.stripDebug())
@@ -203,8 +203,8 @@ gulp.task('build', ['html', 'buildBundle', 'images', 'fonts', 'extras'], functio
 });
 
 // Watch production
-gulp.task('watch', ['html', 'fonts','eslint', 'bundle'], function() {
-    production=$.util.env.prod;
+gulp.task('watch', ['clean','html','images', 'fonts','extras','eslint', 'bundle'], function() {
+    console.log('production',production);
     
     browserSync({
         notify: false,

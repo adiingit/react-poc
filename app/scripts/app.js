@@ -1,47 +1,41 @@
 
 var React = window.React = require('react'),
     ReactDOM = require('react-dom'),
-    Timer = require('./ui/Timer'),
-    mountNode = document.getElementById('app');
+    Timer = require('./home/components/timer'),
+    HeaderNav = require('./common/header/components/headerNav'),
+    AppContainer = require('./common/container/components/appContainer'),
+    Home = require('./home/home-comp'),
+    rootNode = document.getElementById('react-poc'),
+    headNode = document.getElementById('header'),
+    ReactRouter = require('react-router'),
+    Router = ReactRouter.Router,
+    Route = ReactRouter.Route,
+    Link = ReactRouter.Link,
+    IndexRedirect = ReactRouter.IndexRedirect,
+    browserHistory = ReactRouter.browserHistory,
+    applicationNode = document.getElementById('app');
 
-var TodoList = React.createClass({
-  render: function() {
-    var createItem = function(itemText) {
-      return <li>{itemText}</li>;
-    };
-    return <ul>{this.props.items.map(createItem)}</ul>;
-  }
-});
 
-    
-var TodoApp = React.createClass({
-  getInitialState: function() {
-    return {items: [], text: ''};
-  },
-  onChange: function(e) {
-    this.setState({text: e.target.value});
-  },
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var nextItems = this.state.items.concat([this.state.text]);
-    var nextText = '';
-    this.setState({items: nextItems, text: nextText});
-  },
-  render: function() {
-    return (
+var ReactPoc = React.createClass({
+  render:function(){
+    return(
       <div>
-        <h3>TODO</h3>
-        <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.onChange} value={this.state.text} />
-          <button>{'Add #' + (this.state.items.length + 1)}</button>
-        </form>
-        <Timer />
+      <HeaderNav/>
+      {this.props.children}
       </div>
     );
   }
 });
 
+ReactDOM.render(<ReactPoc/>,rootNode);
 
-ReactDOM.render(<TodoApp />, mountNode);
-
+ReactDOM.render((
+  <Router history={browserHistory}>
+    <Route path="/" component={ReactPoc}>
+    <IndexRedirect to="/home" />
+      <Route path="home" component={Home}></Route>
+     {/* <Route component={About}></Route>
+      <Route component={Contact}></Route>*/ }
+    </Route>
+  </Router>
+), rootNode);
