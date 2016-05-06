@@ -5,6 +5,8 @@ var React = window.React = require('react'),
     HeaderNav = require('./common/header/components/headerNav'),
     AppContainer = require('./common/container/components/appContainer'),
     Home = require('./home/home-comp'),
+    About = require('./about/about-comp'),
+    Contact = require('./contact/contact-comp'),
     rootNode = document.getElementById('react-poc'),
     headNode = document.getElementById('header'),
     ReactRouter = require('react-router'),
@@ -34,8 +36,8 @@ ReactDOM.render((
     <Route path="/" component={ReactPoc}>
     <IndexRedirect to="/home" />
       <Route path="home" component={Home}></Route>
-     {/* <Route component={About}></Route>
-      <Route component={Contact}></Route>*/ }
+      <Route path="about" component={About}></Route>
+      <Route path="contact" component={Contact}></Route> 
     </Route>
   </Router>
 ), rootNode);
