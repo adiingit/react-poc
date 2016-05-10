@@ -21,7 +21,7 @@ var LoginForm = React.createClass({
 			this.state.username.value = validText;
 			this.state.username.valid = Boolean(validText.length());
 		}
-		this.setState(this.state);
+		this.setState(this.state.username);
 	},
 	passwordChange:function(e){
 		var validText=e.target.value.match(this.state.pwd.regex);
@@ -29,11 +29,11 @@ var LoginForm = React.createClass({
 			this.state.pwd.value = validText;
 			this.state.pwd.valid = Boolean(validText.length());
 		}
-		this.setState(this.state);
+		this.setState(this.state.pwd);
 	},
 	validate:function(){
 		this.state.isValid=this.state.pwd.valid && this.state.username.valid;
-		this.setState(this.state);
+		this.setState(this.state.isValid);
 	},
 	authenticate:function(){
 		this.state.loginState=false;
@@ -43,13 +43,13 @@ var LoginForm = React.createClass({
 			this.state.loginState=validUser && validPwd;
 			ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(this));
 		}
-		this.setState(this.state);
+		this.setState(this.state.loginState);
 	},
 	render:function(){
-		var html = <form className="form-control" onsubmit="authenticate()" novalidate>
-					<input type="text" placeholder="Username" onchange="usernameChange()" value="this.state.username.value"/>
-					<input type="password" placeholder="Password" onchange="passwordChange()" value="this.state.pwd.value"/>
-					<input type="submit" value="login"/>
+		var html = <form className="form-group" onsubmit="authenticate()" novalidate>
+					<input type="text" className="form-control" placeholder="Username" onchange="usernameChange()" value="this.state.username.value"/>
+					<input type="password" className="form-control" placeholder="Password" onchange="passwordChange()" value="this.state.pwd.value"/>
+					<input type="submit" className="form-control btn" value="login"/>
 					</form>
 		return (html);
 	}

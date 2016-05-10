@@ -7,6 +7,7 @@ var React = window.React = require('react'),
     Home = require('./home/home-comp'),
     About = require('./about/about-comp'),
     Contact = require('./contact/contact-comp'),
+    LoginForm = require('./login/components/login-form'),
     rootNode = document.getElementById('react-poc'),
     headNode = document.getElementById('header'),
     ReactRouter = require('react-router'),
@@ -19,10 +20,17 @@ var React = window.React = require('react'),
 
 
 var ReactPoc = React.createClass({
+
+  getInitialState : function(){
+    return {authenticated : false};
+  },
+  setAuthentication:function(authenticatedStatus){
+    this.setState({authenticated:authenticatedStatus});
+  },
   render:function(){
     return(
       <div>
-      <HeaderNav/>
+      <HeaderNav showNav={this.state.authenticated}/>
       {this.props.children}
       </div>
     );
@@ -34,7 +42,8 @@ ReactDOM.render(<ReactPoc/>,rootNode);
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={ReactPoc}>
-    <IndexRedirect to="/home" />
+      <IndexRedirect to="/home" />
+     {/* <Route path="login" component={LoginForm authenticated={}}></Route>*/}
       <Route path="home" component={Home}></Route>
       <Route path="about" component={About}></Route>
       <Route path="contact" component={Contact}></Route> 
