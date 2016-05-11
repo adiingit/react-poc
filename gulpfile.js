@@ -55,7 +55,7 @@ gulp.task('eslint', function() {
 // Styles
 gulp.task('styles', ['sass', 'moveCss']);
 
-gulp.task('moveCss',['clean'], function(){
+gulp.task('moveCss', function(){
   // the base option sets the relative root for the set of files,
   // preserving the folder structure
   production=$.util.env.prod;
@@ -75,12 +75,20 @@ gulp.task('sass', function() {
         .pipe($.size());
 });
 
+/*gulp.task('sass-vendor', function() {
+    production=$.util.env.prod;
+    return $.rubySass('./app/styles', {
+            style: 'expanded',
+            precision: 10,
+            loadPath: ['app/bower_components']
+        })
+        .pipe($.autoprefixer('last 1 version'))
+        .pipe(gulp.dest(production?'dist/styles':'tmp/styles'))
+        .pipe($.size());
+});
 
-
-
-
-
-
+gulp.task('sass',['sass-user','sass-vendor']);
+*/
 
 // HTML
 gulp.task('html', function() {

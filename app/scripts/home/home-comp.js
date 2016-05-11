@@ -1,14 +1,13 @@
 var React = window.React = require('react');
 var ReactDOM = require('react-dom');
-var CreateList = require('./components/createList');
+var Poll = require('./components/createPoll');
 	
 
 var Home = React.createClass({
 	render:function(){
 		return(
-				<CreateList/>
+				<Poll/>
 		);
-		
 	}
 });
 

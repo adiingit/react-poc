@@ -1,41 +1,46 @@
 var React = require('react'),
-	ReactDOM = require('react-dom');
+	classnames = require('classnames'),
+	PollQuestion = require('./pollQuestion'),
+	ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+console.log(ReactCSSTransitionGroup);
 
 var PollQuestions = React.createClass({
-	var polls=[];
-	function getType(poll){
-		if(poll.answerOptions){
-			if(Array.isArray(poll.answerOptions) && poll.mcq){
-				return 'checkbox';
-			}else if(!poll.mcq){
-				return 'radio';
-			}
-		}else{
-			return 'text';
-		}
-	}
-	function submitAnswer(){
-		
-	}
+	getInitialState : function(){
+		return {pollnumber:0,poll:this.props.polls[0]};
+	},
+	getType:function (poll){
+		return ((poll.answerOptions)?((Array.isArray(poll.answerOptions) &&
+		 poll.mcq)?'checkbox':(!poll.mcq)?'radio':'text'):'text');
+	},
+	submitAnswer:function (){
+		this.setState(function(prvState){
+			return ((prvState.pollnumber<this.props.polls.length-1)?
+			{pollnumber:prvState.pollnumber+1,poll:this.props.polls[prvState.pollnumber+1]}:false);
+		});	
+	},
 	componentDidMount:function(){
-		polls=[{question:'Sample Question 1',
-		answerOptions:false,
-		mcq:false
-		},{question:'Sample Question 2',
-		answerOptions:['option1','option2','option3','option4'],
-		mcq:true
-		},{question:'Sample Question 3',
-		answerOptions:false,
-		mcq:false
-		},{question:'Sample Question 4',
-		answerOptions:['option1','option2','option3','option4'],
-		mcq:false
-		}];
+		this.setState({pollnumber:this.state.pollnumber,poll:this.props.polls[0]});
+	},
+	shouldComponentUpdate:function(newProps,newState){
+		return !((newState.pollnumber===this.props.polls.length) || (newState.pollnumber===this.state.pollnumber)); 
 	},
 	render:function(){
+		var type = this.getType(this.state.poll);
+		var buttonStyle = classnames({
+			'btn btn-primary':true,
+			'disabled': (this.state.pollnumber>=this.props.polls.length-1)
+		});
 		return(
-			<PollQuestion type={}/>
-			<button className="btn" type="submit" onclick={submitAnswer}></button>
+			<ReactCSSTransitionGroup transitionName="animate" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+          		<div>
+					<fieldSet className="form-group">
+						<PollQuestion type={type} question={this.state.poll}/>
+					</fieldSet>
+					<fieldSet className="form-group">
+						<a className={buttonStyle} onClick={this.submitAnswer}>Submit</a>
+					</fieldSet>
+				</div>
+        	</ReactCSSTransitionGroup>
 		);
 	}
 });
