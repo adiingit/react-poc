@@ -32,9 +32,9 @@ var PollQuestions = React.createClass({
 		});
 		return(
 			<ReactCSSTransitionGroup transitionName="animate" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          		<div>
+          		<div >
 					<fieldSet className="form-group">
-						<PollQuestion type={type} question={this.state.poll}/>
+						<PollQuestion type={type} key="{this.state.poll.question}" question={this.state.poll}/>
 					</fieldSet>
 					<fieldSet className="form-group">
 						<a className={buttonStyle} onClick={this.submitAnswer}>Submit</a>
