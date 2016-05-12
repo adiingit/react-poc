@@ -31,15 +31,14 @@ var PollQuestions = React.createClass({
 			'disabled': (this.state.pollnumber>=this.props.polls.length-1)
 		});
 		return(
-			<ReactCSSTransitionGroup transitionName="animate" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          		<div >
-					<fieldSet className="form-group">
-						<PollQuestion type={type} key="{this.state.poll.question}" question={this.state.poll}/>
+			<ReactCSSTransitionGroup transitionName="animate" transitionEnterTimeout={500} component="div" 
+			transitionLeave={false} transitionApper={true}>
+					<fieldSet className="form-group" key={this.state.poll.question+"_0"}>
+						<PollQuestion type={type}  key={this.state.poll.question+"_Q0"} question={this.state.poll}/>
 					</fieldSet>
-					<fieldSet className="form-group">
-						<a className={buttonStyle} onClick={this.submitAnswer}>Submit</a>
+					<fieldSet className="form-group" key={this.state.poll.question+"_1"}>
+						<a className={buttonStyle} key={this.state.poll.question+"_btn"} onClick={this.submitAnswer}>Submit</a>
 					</fieldSet>
-				</div>
         	</ReactCSSTransitionGroup>
 		);
 	}
